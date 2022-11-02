@@ -21,6 +21,16 @@ class CalculatorViewModelTest {
     //SumClicked
 
     @Test
+    fun `sumClicked, when A and B empty, isError true`() {
+        val a = ""
+        val b = ""
+
+        calculatorViewModel.handleEvent(CalculatorEvent.SumClicked(a, b))
+
+        assert(calculatorViewModel.isError)
+    }
+
+    @Test
     fun `sumClicked, when A is empty, isError true`() {
         val a = ""
         val b = "5"
@@ -42,14 +52,13 @@ class CalculatorViewModelTest {
 
 
     @Test
-    fun `sumClicked, when A and B are integers, isError false`() {
+    fun `sumClicked, when A and B are integers, isError false and result updated`() {
         val a = "4"
         val b = "5"
 
         calculatorViewModel.handleEvent(CalculatorEvent.SumClicked(a, b))
 
-        //assert(calculatorViewModel.result=="9")
-        assert(!calculatorViewModel.isError)
+        assert(!calculatorViewModel.isError && calculatorViewModel.result=="9")
     }
 
     //TextNumberCheck - never-mind A or B
