@@ -2,6 +2,8 @@ package com.example.architecture
 
 import com.example.architecture.mvvm.CalculatorEvent
 import com.example.architecture.mvvm.CalculatorViewModel
+import com.example.architecture.mvvm.TextFieldId
+import org.junit.Assert.*
 import org.junit.Before
 import org.junit.Test
 
@@ -27,7 +29,7 @@ class CalculatorViewModelTest {
 
         calculatorViewModel.handleEvent(CalculatorEvent.SumClicked(a, b))
 
-        assert(calculatorViewModel.isError)
+        assertTrue(calculatorViewModel.isError)
     }
 
     @Test
@@ -52,53 +54,45 @@ class CalculatorViewModelTest {
 
 
     @Test
-    fun `sumClicked, when A and B are integers, isError false and result updated`() {
+    fun `sumClicked, when A and B are integer numbers, isError false and result updated`() {
         val a = "4"
         val b = "5"
 
         calculatorViewModel.handleEvent(CalculatorEvent.SumClicked(a, b))
 
-        assert(!calculatorViewModel.isError && calculatorViewModel.result=="9")
+        //separate to 2 methods
+        assertFalse(calculatorViewModel.isError)
+        assertEquals("9", calculatorViewModel.result)
     }
 
-    //TextNumberCheck - never-mind A or B
+    //TextTyped A
 
     @Test
-    fun `TextNumberCheck, when new A string, current A remains`() {
+    fun `TextNumberCheck, when new A is letter, current A remains`() {
         val current = calculatorViewModel.txtA
-        val a = "str"
+        val a = "s"
 
-        calculatorViewModel.handleEvent(CalculatorEvent.TextNumberCheck(a, 1))
+        calculatorViewModel.handleEvent(CalculatorEvent.TextTyped(a, TextFieldId.A))
 
-        assert(calculatorViewModel.txtA == current)
-    }
-
-    @Test
-    fun `TextNumberCheck, when new A char, current A remains`() {
-        val current = calculatorViewModel.txtA
-        val a = "c"
-
-        calculatorViewModel.handleEvent(CalculatorEvent.TextNumberCheck(a, 1))
-
-        assert(calculatorViewModel.txtA == current)
+        assertEquals(current, calculatorViewModel.txtA)
     }
 
     @Test
-    fun `TextNumberCheck, when new A decimal, current A remains`() {
+    fun `TextNumberCheck, when new A is dot, current A remains`() {
         val current = calculatorViewModel.txtA
-        val a = "4.5"
+        val a = "."
 
-        calculatorViewModel.handleEvent(CalculatorEvent.TextNumberCheck(a, 1))
+        calculatorViewModel.handleEvent(CalculatorEvent.TextTyped(a, TextFieldId.A))
 
         assert(calculatorViewModel.txtA == current)
     }
 
     @Test
     fun `TextNumberCheck, when new A empty, current A updated`() {
-        calculatorViewModel.txtA="123"
+        calculatorViewModel.txtA = "1"
         val a = ""
 
-        calculatorViewModel.handleEvent(CalculatorEvent.TextNumberCheck(a, 1))
+        calculatorViewModel.handleEvent(CalculatorEvent.TextTyped(a, TextFieldId.A))
 
         assert(calculatorViewModel.txtA.isEmpty())
     }
@@ -107,16 +101,59 @@ class CalculatorViewModelTest {
     fun `TextNumberCheck, when new A integer, current A updated`() {
         val a = "123"
 
-        calculatorViewModel.handleEvent(CalculatorEvent.TextNumberCheck(a, 1))
+        calculatorViewModel.handleEvent(CalculatorEvent.TextTyped(a, TextFieldId.A))
 
         assert(calculatorViewModel.txtA == "123")
+    }
+
+    //TextTyped B
+    //todo
+
+    @Test
+    fun `TextNumberCheck, when new B is letter, current B remains`() {
+        val current = calculatorViewModel.txtB
+        val b = "s"
+
+        calculatorViewModel.handleEvent(CalculatorEvent.TextTyped(b, TextFieldId.B))
+
+        assertEquals(current, calculatorViewModel.txtB)
+    }
+
+
+    @Test
+    fun `TextNumberCheck, when new B is dot, current B remains`() {
+        val current = calculatorViewModel.txtB
+        val b = "."
+
+        calculatorViewModel.handleEvent(CalculatorEvent.TextTyped(b, TextFieldId.B))
+
+        assertEquals(current, calculatorViewModel.txtB)
+    }
+
+    @Test
+    fun `TextNumberCheck, when new B empty, current B updated`() {
+        calculatorViewModel.txtB = "1"
+        val b = ""
+
+        calculatorViewModel.handleEvent(CalculatorEvent.TextTyped(b, TextFieldId.B))
+
+        assertTrue(calculatorViewModel.txtB.isEmpty())
+    }
+
+    @Test
+    fun `TextNumberCheck, when new B integer, current B updated`() {
+        val b = "123"
+
+        calculatorViewModel.handleEvent(CalculatorEvent.TextTyped(b, TextFieldId.B))
+
+        assertEquals(b, calculatorViewModel.txtB)
     }
 
     //ClearSumClicked
 
     @Test
-    fun `ClearSumClicked, always, result clear`(){
-        calculatorViewModel.result="error"
+    fun `ClearSumClicked, always, result clear`() {
+        calculatorViewModel.result = "error"
 
         calculatorViewModel.handleEvent(CalculatorEvent.ClearSumClicked)
 
