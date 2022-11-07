@@ -1,8 +1,8 @@
 package com.example.architecture.mvvm
 
 sealed class CalculatorEvent {
-    class TextTyped(val txt: String, val id: TextFieldId) : CalculatorEvent()
-    class SumClicked(val a: String, val b: String) : CalculatorEvent()
+    class NumberTyped(val txt: Int, val id: TextFieldId) : CalculatorEvent()
+    class SumClicked(val a: Int, val b: Int) : CalculatorEvent()
     object ClearSumClicked : CalculatorEvent()
 }
 

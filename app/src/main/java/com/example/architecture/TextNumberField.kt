@@ -5,8 +5,8 @@ import androidx.compose.material.TextField
 import androidx.compose.runtime.*
 
 @Composable
-fun TextNumberField(txt: String): String {
-
+fun TextNumberField(onNumberChange: (Int) -> Unit) {
+    val textVerifier = TextVerifier()
     var txtTyped by remember {
         mutableStateOf("")
     }
@@ -15,22 +15,10 @@ fun TextNumberField(txt: String): String {
         value = txtTyped,
         label = { Text("Enter Number") },
         onValueChange = { newText ->
-            if (checkIntOrEmpty(newText)) {
-                txtTyped = newText
+            textVerifier.checkIntOrEmpty(newText)?.let {
+                txtTyped = it.toString()
+                onNumberChange(it)
             }
         },
     )
-    return txtTyped
-}
-
-private fun checkIntOrEmpty(txt: String): Boolean {
-    if (txt.isEmpty()) {
-        return true
-    }
-    return try {
-        txt.toInt()
-        true
-    } catch (e: NumberFormatException) {
-        false
-    }
 }
