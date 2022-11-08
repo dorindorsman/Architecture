@@ -5,8 +5,8 @@ import androidx.compose.material.TextField
 import androidx.compose.runtime.*
 
 @Composable
-fun TextNumberField(onNumberChange: (Int) -> Unit) {
-    val textVerifier = TextVerifier()
+fun TextNumberField(onNumberChange: (Int?) -> Unit) {
+    val textPresentation = TextPresentation()
     var txtTyped by remember {
         mutableStateOf("")
     }
@@ -15,9 +15,9 @@ fun TextNumberField(onNumberChange: (Int) -> Unit) {
         value = txtTyped,
         label = { Text("Enter Number") },
         onValueChange = { newText ->
-            textVerifier.checkIntOrEmpty(newText)?.let {
-                txtTyped = it.toString()
-                onNumberChange(it)
+            textPresentation.checkNumChangePresent(newText,txtTyped).let {
+                txtTyped = it.text
+                onNumberChange(it.number)
             }
         },
     )

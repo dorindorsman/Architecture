@@ -5,8 +5,6 @@ import androidx.compose.material.Button
 import androidx.compose.material.Text
 import androidx.compose.runtime.*
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.res.stringResource
-import com.example.architecture.R
 import com.example.architecture.TextNumberField
 
 @Composable
@@ -18,7 +16,7 @@ fun CalculatorView(viewModel: CalculatorViewModel) {
         TextNumberField(onNumberChange =  {viewModel.handleEvent(CalculatorEvent.NumberTyped(it,TextFieldId.B))})
 
         Button(onClick = {
-            viewModel.handleEvent(CalculatorEvent.SumClicked(viewModel.txtA, viewModel.txtB))
+            viewModel.handleEvent(CalculatorEvent.SumClicked)
         }) {
             Text(text = "Sum")
         }
@@ -32,7 +30,7 @@ fun CalculatorView(viewModel: CalculatorViewModel) {
 //        if (viewModel.isError) {
 //            Text(text = stringResource(id = R.string.input_error), color = Color.Red)
 //        } else {
-//            Text(text = viewModel.result, color = Color.Green)
+            Text(text = viewModel.result, color = Color.Green)
 //        }
     }
 }

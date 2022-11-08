@@ -8,26 +8,27 @@ import com.example.architecture.SumProvider
 
 class CalculatorViewModel : ViewModel() {
     var result by mutableStateOf("result")
-    var txtA by mutableStateOf(0)
-    var txtB by mutableStateOf(0)
+    var txtA : Int? by mutableStateOf(null)
+    var txtB  :Int? by mutableStateOf(null)
 
     fun handleEvent(event: CalculatorEvent) {
         when (event) {
-            is CalculatorEvent.SumClicked -> handleSumClicked(event.a, event.b)
             is CalculatorEvent.NumberTyped -> handleNumberTyped(event.txt, event.id)
+            is CalculatorEvent.SumClicked -> handleSumClicked()
             CalculatorEvent.ClearSumClicked -> result = ""
         }
     }
 
-    private fun handleSumClicked(a: Int, b: Int) {
-        result = "${SumProvider().getSum(a, b)}"
-    }
-
-    private fun handleNumberTyped(txt: Int, id: TextFieldId) {
+    private fun handleNumberTyped(txt: Int?, id: TextFieldId) {
         when (id) {
             TextFieldId.A -> txtA = txt
             TextFieldId.B -> txtB = txt
         }
     }
+
+    private fun handleSumClicked() {
+        result = "${SumProvider().getSum(txtA?:0,txtB?:0)}"
+    }
+
 
 }
